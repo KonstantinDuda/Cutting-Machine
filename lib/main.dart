@@ -8,6 +8,7 @@ void main() {
   runApp(MainApp());
 }
 
+// ignore: must_be_immutable
 class MainApp extends StatelessWidget {
   MainApp({super.key});
 
@@ -17,10 +18,11 @@ class MainApp extends StatelessWidget {
 
   var objCount = 100;
 
-  var oneObj = MyObject(width: 9, height: 10, count: 30);
+  var oneObj = MyObject(width: 9, height: 10, count: 50);
 
   List<MyObject> mylist = [];
-  List<MyObject> mylistRes = [];
+  List<MyObject> mylistFirstVersion = [];
+  var bestResult = [];
 
   @override
   Widget build(BuildContext context) {
@@ -39,19 +41,27 @@ class MainApp extends StatelessWidget {
   }
 
   calculator() {
-    var extraRes = extra(mainObj, oneObj);
-    mylistRes = mylist;
-    print('extraRes == $extraRes');
-    print('myListRes.length == ${mylistRes.length}');
+    var firstExtraRes = extra(mainObj, oneObj);
+    mylistFirstVersion = mylist;
+    print('firstExtraRes == $firstExtraRes. All == ${(firstExtraRes.trash + firstExtraRes.usefull) + (mylistFirstVersion.length * (oneObj.width * oneObj.height))}');
+    print('mylistFirstVersion.length == ${mylistFirstVersion.length}');
     mylist.clear();
     print('myList after clear myList.length == ${mylist.length}');
     var extraRotateRes = extra(mainObj.rotate(), oneObj);
-    print('extraRotateRes == $extraRotateRes');
-    print('myListRotateRes.length == ${mylist.length}');
-    if (extraRes.trash < extraRotateRes.trash) {
-      print("extra res is better than extra res rotate. return mylistRes");
+    print('extraRotateRes == $extraRotateRes. All == ${(extraRotateRes.trash + extraRotateRes.usefull) + (mylist.length * (oneObj.width * oneObj.height))}');
+    print('myList.length == ${mylist.length}');
+    if(mylist.length > mylistFirstVersion.length) {
+      bestResult = mylist;
+    } else if(mylist.length < mylistFirstVersion.length) {
+      bestResult = mylistFirstVersion;
+      } else if(mylist.length == mylistFirstVersion.length) {
+    if (firstExtraRes.trash < extraRotateRes.trash) {
+      print("firstExtraRes is better than extraRotateRes. return mylistFirstVersion");
+      bestResult = mylistFirstVersion;
     } else {
-      print("extra res is worst than extra res rotate. return mylist");
+      print("firstExtraRes is worst than extraRotateRes. return mylist");
+      bestResult = mylist;
+    }
     }
   }
 
