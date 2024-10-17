@@ -1,4 +1,4 @@
-class Result {
+/*class Result {
   double usefull;
   double trash;
 
@@ -8,4 +8,4 @@ class Result {
   String toString() {
     return "Result: usefull == $usefull, trash == $trash. Sum == ${usefull + trash}";
   }
-}
+}*/
